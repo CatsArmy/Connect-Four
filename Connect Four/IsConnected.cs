@@ -10,57 +10,30 @@ namespace Connect_Four
     {
         static int numOfRows = 6;
         static int numOfCollums = 7;
-        bool CheckSumOfRows(char[,] board, int xLevel, char currentSlot)
-        {
-            int rowTracker = 0;
-            for (int i = 0; i < numOfRows; i++)
-            {
-                if (board[i, xLevel] == currentSlot)
-                    rowTracker++;
-                else
-                    rowTracker = 0;
-                if (rowTracker == 4)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
-        bool CheckSumOfCollums(char[,] board, int yLevel, char currentSlot)
-        {
-            int collumTracker = 0;
-            for (int i = 0; i < numOfRows; i++)
-            {
-                if (board[yLevel, i] == currentSlot)
-                    collumTracker++;
-                else
-                    collumTracker = 0;
-                if (collumTracker == 4)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        bool CheckSumOfPrimaryDiagonal(char[,] board,int xLevel,int yLevel,char current)
+        /*bool CheckSumOfPrimaryDiagonal(char[,] board, int xLevel, int yLevel, char current)
         {
             int PrimeDiagTracker = 0;
             //start at drop location
             //end at 0
             //start drop end 7
-            
-            for (int i = yLevel, j = xLevel; i < numOfRows || j < numOfCollums ; i++,j++)
+            //y offset = y max - x - y
+
+            // 4,3 
+            for (int i = 0; i < numOfRows - yLevel; i++)
             {
-                if (board[i,j] == current)
+
+            }
+            for (int i = yLevel, j = xLevel; i < numOfRows - () && j < numOfCollums; i++, j++)
+            {
+                if (board[i, j] == current)
                 {
 
                 }
             }
             return false;
-        }
-        int GetSumOfSecondaryDiagonal(int[,] arr)
+        }*/
+        /*int GetSumOfSecondaryDiagonal(int[,] arr)
         {
             int numOfRows = arr.GetLength(0);
             int numOfCollums = arr.GetLength(1);
@@ -70,48 +43,142 @@ namespace Connect_Four
                 sumOfSecondaryDiaginal += arr[i, j];
             }
             return sumOfSecondaryDiaginal;
-        }
-
-        public static bool isConnected(char[,] board, int xLevel, int yLevel, char currentSlot)
+        }*/
+        
+        /// <summary>
+        ///  Gets the game board the position x (collum) of where the token was placed
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="x"></param>
+        /// <param name="currentSlot"></param>
+        /// <returns>True if 4 of the same token are connected</returns>
+        bool CheckRows(char[,] board, int x, char type)
         {
-            int collumTracker = 0;
-            for (int i = yLevel; i < numOfRows; i++)
+            int rowTracker = 0;
+            for (int i = 0; i < numOfRows; i++)
             {
-                if (board[i, xLevel] == currentSlot)
+                if (rowTracker == 4)
+                    return true;
+                if (board[i, x] == type)
                     rowTracker++;
                 else
                     rowTracker = 0;
-                if (board[])
-                {
-
-                }
             }
-            for (int i = yLevel; i < numOfRows; i++)
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the game board the position y (row) of where the token was placed
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="y"></param>
+        /// <param name="currentSlot"></param>
+        /// <returns>True if 4 of the same token are connected</returns>
+        bool CheckCollums(char[,] board, int y, char type)
+        {
+            int collumTracker = 0;
+            for (int i = 0; i < numOfCollums; i++)
             {
-                if (board[yLevel + i,xLevel + i] == currentSlot)
-                {
-
-                }
-                if (board[yLevel + i,xLevel - i] == currentSlot)
-                {
-
-                }
+                if (collumTracker == 4)
+                    return true;
+                if (board[y, i] == type)
+                    collumTracker++;
+                else
+                    collumTracker = 0;
             }
-/*////////////////
+            return false;
+        }
 
-  |0|0|0|0|0|0|0|
-  |0|0|0|0|0|0|0|
-  |0|0|0|0|0|0|0|
-  |0|0|0|0|0|0|0|
-  |0|0|0|0|x|0|0|
-  |0|0|0|0|0|0|0|
-  |0|0|0|0|0|0|0|
-
-////////////////*/
-            for (int i = xLevel; i < numOfCollums; i++)
+        /// <summary>
+        /// Gets The <paramref name="x"/> (collum) and <paramref name="y"/> (row) of the placed token 
+        /// and the tokens <paramref name="type"/>
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="type"></param>
+        /// <returns>True if any diagonal stack of 4 tokens of the same <paramref name="type"/>
+        /// are connected on the <paramref name="board"/> are </returns>
+        public bool CheckDiagonals(char[,] board, int x, int y, char type)
+        {
+            if (y > 2)
             {
-                
+                if (x < 4)
+                {
+                    if (board[y - 1, x + 1] == type && board[y - 2, x - 2] == type && board[y - 3, x - 3] == type)
+                    {
+                        return true;
+                    }
+
+                }
+                if (x > 2)
+                {
+                    if (board[y - 1, x - 1] == type && board[y - 2, x - 2] == type && board[y - 3, x - 3] == type)
+                    {
+                        return true;
+                    }
+                }
             }
+            if (y < 3)
+            {
+                if (x < 4)
+                {
+                    if (board[y + 1, x + 1] == type && board[y + 2, x - 2] == type && board[y + 3, x - 3] == type)
+                    {
+                        return true;
+                    }
+
+                }
+                if (x > 2)
+                {
+                    if (board[y + 1, x - 1] == type && board[y + 2, x - 2] == type && board[y + 3, x - 3] == type)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (y < 5 && y > 1)
+            {
+                if (x < 5 && x > 0)
+                {
+                    if (board[y + 1, x - 1] == type && board[y - 1, x + 1] == type && board[y - 2, x + 2] == type)
+                    {
+                        return true;
+                    }
+                }
+                if (x < 6 && x > 1)
+                {
+                    if (board[y + 1, x + 1] == type && board[y - 1, x - 1] == type && board[y - 2, x - 2] == type)
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (y < 4 && y > 0)
+            {
+                if (x < 5 && x > 0)
+                {
+                    if (board[y - 1, x - 1] == type && board[y + 1, x + 1] == type && board[y + 2, x + 2] == type)
+                    {
+                        return true;
+                    }
+                }
+                if (x < 6 && x > 1)
+                {
+                    if (board[y - 1, x + 1] == type && board[y + 1, x - 1] == type && board[y + 2, x - 2] == type)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool IsConnected(char[,] board, int x, int y, char type)
+        {
+            bool connected = (CheckRows(board, x, type) && CheckCollums(board, y, type)
+                && CheckDiagonals(board, x, y, type));
+            return connected;   
         }
     }
+
 }
