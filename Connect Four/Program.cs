@@ -39,6 +39,10 @@ static string Printer(char[,] arr)
 ///turn starts with X
 ///on input check if the collum selected is available
 
+///<remarks>Quick code i wrote to test the board</remarks>
+///Todo
+///make the code function with player changing and who wins
+///refactor the code to be in a class
 char[,] board = new char[6, 7];
 bool gameOver = false;
 bool turn = false;
@@ -68,6 +72,6 @@ while (!gameOver)
             board[i, x] = turn ? 'x' : 'o';
         }
     }
-    turn = turn ? false : true;
+    turn = !turn;
     Console.WriteLine(Printer(board));
 }

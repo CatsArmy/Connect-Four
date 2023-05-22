@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Connect_Four
 {
+ /// <summary>
+ /// The Class is used to check if someone has won by having 4 tokens connected
+ /// </summary>
+ /// <remarks>potentialy need to refactor the code and make it work with a board/GameManager class</remarks>
     internal class IsConnected
     {
         static int numOfRows = 6;
