@@ -1,4 +1,5 @@
-﻿/*////////////////
+﻿using Connect_Four;
+/*////////////////
 
   |x|0|0|x|0|0|x|
   |0|x|0|x|0|x|0|
@@ -9,26 +10,40 @@
   
 
 ////////////////*/
-static string Printer(char[,] arr)
+static void BoardPrinter(char[,] arr)
 {
     int numOfRows = arr.GetLength(0);
     int numOfCollums = arr.GetLength(1);
-    string result = " ";
-    string nextRow = "\n";
     for (int j = 0; j < numOfRows; j++)
     {
-        result += nextRow + nextRow;
+        Console.WriteLine('\n');
         for (int i = 0; i < numOfCollums; i++)
         {
-            if (arr[j, i] > 99)
-                result += $" {arr[j, i]}|";
-            else if (arr[j, i] > 9)
-                result += $"  {arr[j, i]}|";
-            else
-                result += $"   {arr[j, i]}|";
+            if (arr[j, i] == ' ')
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write(" |");
+                Console.ResetColor();
+            }
+            else if (arr[j, i] == 'x')
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"{arr[j, i]}");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("|");
+                Console.ResetColor();
+            }
+            else if (arr[j, i] == 'o')
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"{arr[j, i]}");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("|");
+                Console.ResetColor();
+            }
         }
     }
-    return result;
+    Console.WriteLine();
 }
 ///possiable states | X | * | O |
 ///bool check prime diag
@@ -43,9 +58,18 @@ static string Printer(char[,] arr)
 ///Todo
 ///make the code function with player changing and who wins
 ///refactor the code to be in a class
+///move this code into a class and the static void main should just create the class and run
+///check if the collum is full and if it is let the player chose a diffrent spot
+///check if game is draw by checking the entire board and if its full and no one won in that turn then its
+///a draw
+
+
+//ctor properys
 char[,] board = new char[6, 7];
+char tokenType;
 bool gameOver = false;
-bool turn = false;
+bool turn = true;
+//when creating class
 for (int i = 0; i < board.GetLength(0); i++)
 {
     for (int j = 0; j < board.GetLength(1); j++)
@@ -53,25 +77,37 @@ for (int i = 0; i < board.GetLength(0); i++)
         board[i, j] = ' ';
     }
 }
-int x = int.Parse(Console.ReadLine());
-board[5, x] = 'x';
-Console.WriteLine(Printer(board));
+//the game loop
 while (!gameOver)
 {
-    x = int.Parse(Console.ReadLine());
+    //determin the player type
+    ConsoleColor color = turn ? ConsoleColor.Red : ConsoleColor.Yellow;
+    tokenType = turn ? 'x' : 'o';
+    //input with lil vfx
+    Console.ForegroundColor = color;
+    int x = int.Parse(Console.ReadLine());
+    //clear last turn
+    Console.ResetColor();
     Console.Clear();
+    //check where it lands *Todo add portection for if row is full
     for (int i = 0; i < 6; i++)
     {
         if (board[i, x] != ' ')
         {
-            board[i - 1, x] = turn ? 'x' : 'o';
+            //place token and check if game is over
+            board[i - 1, x] = tokenType;
+            gameOver = IsConnected.BoardChecker(board, x, i - 1, tokenType);
             break;
         }
-        else if (i == 5)
+        if (i == 5 && board[i,x] == ' ')
         {
-            board[i, x] = turn ? 'x' : 'o';
+            //place token and check if game is over
+            board[i, x] = tokenType;
+            gameOver = IsConnected.BoardChecker(board, x, i, tokenType);
         }
     }
+    //swap player and print the action *Part of Todo prevent this when giving the turn back
+    //untill he placed a valid token or its a draw
     turn = !turn;
-    Console.WriteLine(Printer(board));
+    BoardPrinter(board);
 }

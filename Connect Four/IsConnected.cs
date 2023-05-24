@@ -56,10 +56,11 @@ namespace Connect_Four
         /// <param name="x"></param>
         /// <param name="currentSlot"></param>
         /// <returns>True if 4 of the same token are connected</returns>
-        bool CheckRows(char[,] board, int x, char type)
+        static bool CheckRows(char[,] board, int x, char type)
         {
             int rowTracker = 0;
-            for (int i = 0; i < numOfRows; i++)
+            //for (int i = 0; i < numOfRows; i++)
+            for (int i = numOfRows - 1; i >= 0; i--)
             {
                 if (rowTracker == 4)
                     return true;
@@ -78,10 +79,11 @@ namespace Connect_Four
         /// <param name="y"></param>
         /// <param name="currentSlot"></param>
         /// <returns>True if 4 of the same token are connected</returns>
-        bool CheckCollums(char[,] board, int y, char type)
+        static bool CheckCollums(char[,] board, int y, char type)
         {
             int collumTracker = 0;
-            for (int i = 0; i < numOfCollums; i++)
+            //for (int i = 0; i < numOfCollums; i++)
+            for (int i = numOfCollums - 1; i >= 0; i--)
             {
                 if (collumTracker == 4)
                     return true;
@@ -103,7 +105,7 @@ namespace Connect_Four
         /// <param name="type"></param>
         /// <returns>True if any diagonal stack of 4 tokens of the same <paramref name="type"/>
         /// are connected on the <paramref name="board"/> are </returns>
-        public bool CheckDiagonals(char[,] board, int x, int y, char type)
+        static bool CheckDiagonals(char[,] board, int x, int y, char type)
         {
             if (y > 2)
             {
@@ -177,11 +179,21 @@ namespace Connect_Four
             }
             return false;
         }
-        public bool IsConnected(char[,] board, int x, int y, char type)
+        /// <summary>
+        /// checks all the diagonals above and below the point placed
+        /// </summary>
+        /// <return>true if </return>
+        /// <param name="board"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="type"></param>
+        /// <returns>true if at lesat one lines (<see cref="CheckCollums(char[,], int, char)"/>,
+        /// <see cref="CheckRows(char[,], int, char)"/>,<see cref="CheckDiagonals(char[,], int, int, char)"/>)
+        /// returns true</returns>
+        public static bool BoardChecker(char[,] board, int x, int y, char type)
         {
-            bool connected = (CheckRows(board, x, type) && CheckCollums(board, y, type)
-                && CheckDiagonals(board, x, y, type));
-            return connected;   
+            bool isConnected = CheckRows(board, x, type) || CheckCollums(board, y, type) || CheckDiagonals(board, x, y, type);
+            return isConnected;   
         }
     }
 
