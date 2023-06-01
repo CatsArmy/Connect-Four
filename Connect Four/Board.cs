@@ -19,6 +19,9 @@ namespace Connect_Four
             lastPostion = new int[2];
             Initialize();
         }
+        /// <summary>
+        /// Sets the board
+        /// </summary>
         void Initialize()
         {
             for (int i = 0; i < board.GetLength(0); i++)
@@ -29,18 +32,38 @@ namespace Connect_Four
                 }
             }
         }
+        /// <summary>
+        /// getter for the board matrix
+        /// </summary>
+        /// <returns>the board</returns>
         public char[,] GetBoard()
         {
             return board;
         }
+        /// <summary>
+        /// getter for token type
+        /// </summary>
+        /// <returns>the token type</returns>
         public char GetTokenType()
         {
             return tokenType;
         }
+        /// <summary>
+        /// sets the token type according to the turn
+        /// </summary>
+        /// <param name="_tokenType"></param>
         public void SetTokenType(bool _tokenType)
         {
             tokenType = _tokenType ? 'O' : '0';
         }
+        /// <summary>
+        /// lets you get a token at a certin coordination
+        /// used for showing what player one the game
+        /// </summary>
+        /// <remarks>if the <paramref name="y"/> is unchanged then will return the last token in a certin collum</remarks>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>the token in the x and y coordination</returns>
         public char GetTokenAtCoord(int x, int y = -1)
         {
             if (x > 6)
@@ -58,6 +81,11 @@ namespace Connect_Four
             }
             return ' ';
         }
+        /// <summary>
+        /// Sets the token at a user inputed coordination if its in the range and the collum isnt full
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns>true if the collum isnt full and its a valid coordination</returns>
         public bool SetTokenAtCoord(int x)
         {
             if (x < 0 || x > 6)
@@ -106,6 +134,11 @@ namespace Connect_Four
             lastPostion[0] = x;
             lastPostion[1] = y;
         }
+        /// <summary>
+        /// Quick interface for getting the color for each type of token and the board base
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public ConsoleColor GetColor(char token)
         {
             if (token == 'O')
@@ -114,6 +147,9 @@ namespace Connect_Four
                 return ConsoleColor.Yellow;
             return ConsoleColor.Blue;
         }
+        /// <summary>
+        /// prints the board according the the values of the board with colors matching too
+        /// </summary>
         public void Print()
         {
             int numOfRows = board.GetLength(0);

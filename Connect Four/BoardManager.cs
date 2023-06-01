@@ -19,9 +19,13 @@ namespace Connect_Four
             gameBoard = board;
             this.board = gameBoard.GetBoard();
             type = gameBoard.GetTokenType();
-
         }
-        
+        /// <summary>
+        /// checks all of the possiable areas that you could win from where you placed your last token
+        /// </summary>
+        /// <return>true if atlesat 1 is connected</return>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public bool BoardCheck(int x)
         {
             type = gameBoard.GetTokenType();
@@ -31,6 +35,10 @@ namespace Connect_Four
                 CheckCollums() || CheckDiagonals();
             return is4Connected;
         }
+        /// <summary>
+        /// Checks if there is any blank slots when its the last turn and no one has won
+        /// </summary>
+        /// <returns>true if all slots are filled with tokens</returns>
         public bool CheckIsDraw()
         {
             type = gameBoard.GetTokenType();
@@ -48,6 +56,12 @@ namespace Connect_Four
             }
             return true;
         }
+        /// <summary>
+        /// checks all of the diagonals and returns true if 3 of the same token are in a row
+        /// (logic for this is that it checks from where u place and so it doesnt need to check it self)
+        /// </summary>
+        /// <remarks>potenial bug on line 83</remarks>
+        /// <returns>true if atlesat 1 diagonal is connected</returns>
         private bool CheckDiagonals()
         {
             if (y > 2)
@@ -71,7 +85,7 @@ namespace Connect_Four
             {
                 if (x > 2)
                 {
-                    if (board[y + 1, x - 1] == type && board[y + 2, x - 2] == type && board[y + 3, x - 3] == type)
+                    if (board[y + 1, x - 1] == type && board[y + 2, x - 2] == type && board[y + 3, x - 3] == type)//line83
                     {
                         return true;
                     }
@@ -121,6 +135,10 @@ namespace Connect_Four
             }
             return false;
         }
+        /// <summary>
+        /// checks all of the x positions on a certin y level
+        /// </summary>
+        /// <returns>true if atleast 4 x positions of the same type are connected with no split inbetween</returns>
         private bool CheckCollums()
         {
             int numOfCollums = board.GetLength(1);
@@ -140,6 +158,10 @@ namespace Connect_Four
             }
             return false;
         }
+        /// <summary>
+        /// checks all the y positions on the x position of where the token was placed
+        /// </summary>
+        /// <returns>true if atlesat 4 of the same token type is connected</returns>
         private bool CheckRows()
         {
             int numOfRows = board.GetLength(0);
@@ -159,6 +181,11 @@ namespace Connect_Four
             }
             return false;
         }
+        /// <summary>
+        /// uses the x position of where the token was placed to find its y level
+        /// </summary>
+        /// <remarks>logic is that the first slot that isnt empty is the slot that was last placed</remarks>
+        /// <returns>the y level of the last x position placed</returns>
         private int GetY()
         {
             int numOfRows = board.GetLength(0);

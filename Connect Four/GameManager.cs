@@ -24,6 +24,11 @@ namespace Connect_Four
             draw = false;
             turn = true;
         }
+        /// <summary>
+        /// When Run the game will play untill someone wins
+        /// </summary>
+        /// <remarks>the rematch function only works with play if its in a while loop (example: while (manager.Play());</remarks>
+        /// <returns>true if you want to rematch</returns>
         public bool Play()
         {
             int turnCounter = 0;
@@ -43,6 +48,12 @@ namespace Connect_Four
                 Reinstancuate();
             return rematch;
         }
+        /// <summary>
+        /// syncs the token type according to the turn then lets you place a token
+        /// </summary>
+        /// <remarks>if <paramref name="turnCounter"/> == all slots filled check if its a draw</remarks>
+        /// <param name="turnCounter"></param>
+        /// <returns>true if placing the token connects 4 tokens of the same type in the same direction</returns>
         private bool PlayTurn(int turnCounter)
         {   
             board.SetTokenType(turn);
@@ -51,6 +62,10 @@ namespace Connect_Four
                 return manager.CheckIsDraw();
             return isConnected;
         }
+        /// <summary>
+        /// lets you place a  token untill you have a valid token spot
+        /// </summary>
+        /// <returns>true if 4 or more are connected</returns>
         private bool PlaceToken()
         {
             bool success = false;
@@ -72,6 +87,9 @@ namespace Connect_Four
             Console.Clear();
             return manager.BoardCheck(x);
         }
+        /// <summary>
+        /// Game Over message
+        /// </summary>
         private void GameOver()
         {
             int[] lastPosCords = board.GetLastPosition();
@@ -79,6 +97,10 @@ namespace Connect_Four
             Console.WriteLine($"{token} Won the game", Console.ForegroundColor = board.GetColor(token));
             Console.ResetColor();
         }
+        /// <summary>
+        /// asks the user if he wants a rematch
+        /// </summary>
+        /// <returns>true if user inputs a yes</returns>
         private bool Rematch()
         {
             if (draw)
@@ -100,6 +122,9 @@ namespace Connect_Four
             }
             return response == 1;
         }
+        /// <summary>
+        /// reset the game
+        /// </summary>
         private void Reinstancuate()
         {
             board = new Board();
@@ -109,10 +134,18 @@ namespace Connect_Four
             turn = true;
             Console.Clear();
         }
+        /// <summary>
+        /// unused function
+        /// </summary>
+        /// <returns>the turn</returns>
         private bool GetTurn()
         {
             return turn;
         }
+        /// <summary>
+        /// unsed function
+        /// </summary>
+        /// <returns>the game over boolean</returns>
         private bool GetGameOver()
         {
             return gameOver;
